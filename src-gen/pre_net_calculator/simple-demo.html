@@ -1,0 +1,136 @@
+<!doctype html>
+
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>CalculatorForm</title>
+        <style>
+            .cform-element {
+                padding: 5px 0;
+                display: block;
+            }
+            .cform-element > .cform-label {
+                display: inline-block;
+                width: 50%;
+            }
+            .cform-element > select,
+            .cform-element > input[type="text"] {
+                box-sizing: border-box;
+                width: calc(50% - 10px);
+            }
+            .cform-input {
+                text-align: right;
+            }
+            .cform-button {
+                text-align: center;
+                min-width: 200px;
+            }
+        </style>
+    </head>
+
+    <body>
+        <div class="cform">
+            <fieldset class="cform-group cform-group-input">
+                <legend>Allgemein</legend>
+                <label class="cform-element cform-element-net-pay">
+                    <span class="cform-label">Bruttolohn (in €):</span>
+                    <input type="text" name="net_pay" class="cform-field cform-input" value="3000.00">
+                </label>
+                <label class="cform-element cform-element-tax-exemption">
+                    <span class="cform-label">Steuerfreibetrag:</span>
+                    <input type="text" name="tax_exemption" class="cform-field cform-input">
+                </label>
+                <label class="cform-element cform-element-tax-class">
+                    <span class="cform-label">Steuerklasse:</span>
+                    <select name="tax_class" class="cform-field cform-select">
+                        <option value="1">Klasse 1</option>
+                        <option value="2">Klasse 2</option>
+                        <option value="3" selected>Klasse 3</option>
+                        <option value="4">Klasse 4</option>
+                        <option value="5">Klasse 5</option>
+                        <option value="6">Klasse 6</option>
+                    </select>
+                </label>
+                <div class="cform-element cform-element-church">
+                    <span class="cform-label">Kirche:</span>
+                    <label class="cform-element">
+                        <input type="radio" name="church" value="1" class="cform-field cform-choice-option cform-radio-option" checked>
+                        <span class="cform-label">ja</span>
+                    </label>
+                    <label class="cform-element">
+                        <input type="radio" name="church" value="0" class="cform-field cform-choice-option cform-radio-option">
+                        <span class="cform-label">nein</span>
+                    </label>
+                </div>
+                <label class="cform-element cform-element-state">
+                    <span class="cform-label">Bundesland:</span>
+                    <select name="state" class="cform-field cform-select">
+                        <option value="BW">Baden-Württemberg</option>
+                        <option value="BY">Bayern</option>
+                        <option value="BE">Berlin</option>
+                        <option value="HH">Hamburg</option>
+                    </select>
+                </label>
+                <label class="cform-element cform-element-health-additional">
+                    <span class="cform-label">KV-Zusatzbeitrag:</span>
+                    <input type="text" name="health_additional" class="cform-field cform-input" value="1.1">
+                </label>
+            </fieldset>
+            <fieldset class="cform-group cform-group-result">
+                <legend>Ergebnis</legend>
+                <label class="cform-element cform-element-pre-tax">
+                    <span class="cform-label">Brutto:</span>
+                    <input type="text" name="pre_tax" class="cform-field cform-input" readonly>
+                </label>
+                <label class="cform-element cform-element-solidarity-tax">
+                    <span class="cform-label">Solidaritätszuschlag:</span>
+                    <input type="text" name="solidarity_tax" class="cform-field cform-input" readonly>
+                </label>
+                <label class="cform-element cform-element-church-tax">
+                    <span class="cform-label">Kirchensteuer:</span>
+                    <input type="text" name="church_tax" class="cform-field cform-input" readonly>
+                </label>
+                <label class="cform-element cform-element-wage-tax">
+                    <span class="cform-label">Lohnsteuer:</span>
+                    <input type="text" name="wage_tax" class="cform-field cform-input" readonly>
+                </label>
+                <label class="cform-element cform-element-tax">
+                    <span class="cform-label">Steuern:</span>
+                    <input type="text" name="tax" class="cform-field cform-input" readonly>
+                </label>
+                <label class="cform-element cform-element-pension-insurance">
+                    <span class="cform-label">Rentenversicherung:</span>
+                    <input type="text" name="pension_insurance" class="cform-field cform-input" readonly>
+                </label>
+                <label class="cform-element cform-element-jobless-insurance">
+                    <span class="cform-label"> Arbeitslosenversicherung:</span>
+                    <input type="text" name="jobless_insurance" class="cform-field cform-input" readonly>
+                </label>
+                <label class="cform-element cform-element-health-insurance">
+                    <span class="cform-label"> Krankenversicherung:</span>
+                    <input type="text" name="health_insurance" class="cform-field cform-input" readonly>
+                </label>
+                <label class="cform-element cform-element-nursing-care-insurance">
+                    <span class="cform-label"> Pflegeversicherung:</span>
+                    <input type="text" name="nursing_care_insurance" class="cform-field cform-input" readonly>
+                </label>
+                <label class="cform-element cform-element-social-charges">
+                    <span class="cform-label"> Sozialabgaben:</span>
+                    <input type="text" name="social_charges" class="cform-field cform-input" readonly>
+                </label>
+                <label class="cform-element cform-element-net">
+                    <span class="cform-label">Netto:</span>
+                    <input type="text" name="net" class="cform-field cform-input" readonly>
+                </label>
+                <div class="cform-element cform-element-send">
+                    <button type="submit" name="send" class="cform-button cform-button-submit">abschicken</button>
+                </div>
+            </fieldset>
+        </div>
+        <script type="text/javascript" src="cform.js" charset="utf-8"></script>
+        <script type="text/javascript" src="simple.js" charset="utf-8"></script>
+        <script>
+            cform.init(document.querySelectorAll('.cform'), { calculations: cform_pre_net_calculator });
+        </script>
+    </body>
+</html>

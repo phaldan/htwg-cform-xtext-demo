@@ -1,0 +1,70 @@
+<!doctype html>
+
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>Brutto-Netto-Gehaltsrechner</title>
+        <style>
+            .cform-element {
+            padding: 5px 0;
+            display: block;
+            }
+            .cform-element > .cform-label {
+            display: inline-block;
+            width: 50%;
+            }
+            .cform-element > select,
+            .cform-element > input[type="text"] {
+            box-sizing: border-box;
+            width: calc(50% - 10px);
+            }
+            .cform-input {
+            text-align: right;
+            }
+            .cform-button {
+            text-align: center;
+            min-width: 200px;
+            }
+        </style>
+        <link rel="import" href="../src-gen/pre_net_calculator/simple-template.html">
+        <script type="text/javascript" src="../src-gen/pre_net_calculator/simple.js" charset="utf-8"></script>
+    </head>
+
+    <body>
+        <div id="container"></div>
+        <script>
+            var link = document.querySelector('link[rel="import"]');
+
+            if (link.import) {
+                // Clone the <template> in the import.
+                var template = link.import.querySelector('template');
+                var clone = document.importNode(template.content, true);
+
+                document.querySelector('#container').appendChild(clone);
+            }
+        </script>
+        <script>
+            document.querySelectorAll('.cform-element-net-pay, .cform-element-health-additional').forEach(element => {
+                element.querySelectorAll('.cform-input').forEach(input => {
+                    input.value = Number(input.value).toLocaleString('de-DE');
+                });
+            });
+
+            const cforms = cform.init(document.querySelectorAll('.cform'), {
+                calculations: cform_pre_net_calculator,
+                formatInput: value => {
+                    return value.replace('.','').replace(',','.');
+                },
+                formatOutput: value => {
+                    return value.toLocaleString('de-DE', { maximumFractionDigits: 2, minimumFractionDigits: 2 });
+                }
+            });
+
+            setTimeout(() => {
+                const element = document.querySelector('.cform-element-net-pay .cform-input');
+                element.value = "2000,00"
+                cforms.update(element);
+            }, 3000);
+        </script>
+    </body>
+</html>

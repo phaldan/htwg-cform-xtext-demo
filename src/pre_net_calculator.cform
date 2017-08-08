@@ -1,0 +1,52 @@
+form pre_net_calculator {
+    group input label "Allgemein" {
+        field net_pay label "Bruttolohn (in €):" value "3000.00"
+        field tax_exemption label "Steuerfreibetrag:"
+        dropdown tax_class label "Steuerklasse:" {
+            option "Klasse 1" value "1"
+            option "Klasse 2" value "2"
+            option "Klasse 3" disabled selected value "3"
+            option "Klasse 4" value "4"
+            option "Klasse 5" value "5"
+            option "Klasse 6" value "6"
+        }
+        choice church label "Kirche:" {
+            option "ja" checked value "1"
+            option "nein" value "0"
+        }
+        dropdown state label "Bundesland:" {
+            option "Baden-Württemberg" value "BW"
+            option "Bayern" value "BY"
+            option "Berlin" value "BE"
+            option "Hamburg" value "HH"
+        }
+        field health_additional label "KV-Zusatzbeitrag:" value "1.1"
+    }
+
+    group result label "Ergebnis" {
+        field pre_tax label "Brutto:" readonly
+        field solidarity_tax label "Solidaritätszuschlag:" readonly
+        field church_tax label "Kirchensteuer:" readonly
+        field wage_tax label "Lohnsteuer:" readonly
+        field tax label "Steuern:" readonly
+        field pension_insurance label "Rentenversicherung:" readonly
+        field jobless_insurance label " Arbeitslosenversicherung:" readonly
+        field health_insurance label " Krankenversicherung:" readonly
+        field nursing_care_insurance label " Pflegeversicherung:" readonly
+        field social_charges label " Sozialabgaben:" readonly
+        field net label "Netto:" readonly
+        submit-button send "abschicken"
+    }
+
+    calculate result.pre_tax = input.net_pay
+    calculate result.wage_tax = input.net_pay * 14.372%
+    calculate result.church_tax = result.wage_tax * 9%
+    calculate result.solidarity_tax = result.wage_tax * 5.5%
+    calculate result.tax = result.wage_tax + result.church_tax + result.solidarity_tax
+    calculate result.pension_insurance = input.net_pay * 9.35%
+    calculate result.jobless_insurance = input.net_pay * 1.5%
+    calculate result.health_insurance = input.net_pay * (7.30% + input.health_additional/100)
+    calculate result.nursing_care_insurance = input.net_pay * (1.275% + 0.25%)
+    calculate result.social_charges = result.pension_insurance + result.jobless_insurance + result.health_insurance + result.nursing_care_insurance
+    calculate result.net = result.pre_tax - result.tax - result.social_charges
+}
