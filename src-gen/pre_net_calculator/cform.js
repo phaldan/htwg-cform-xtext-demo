@@ -36,7 +36,7 @@ const cform = (function(document) {
 
         _initStore() {
             const fields = this.element.querySelectorAll('.' + CLASSES.FIELD);
-            this.store = {};
+            this.store = { fields: {}, variables: {} };
             fields.forEach(element => {
                 const value = this._getFieldValue(element);
                 this._setStoreFromField(element, element.value);
@@ -52,12 +52,12 @@ const cform = (function(document) {
         }
 
         _setStoreFromField(element, value) {
-            this.store[element.name] = this.formatInput(value, element);
+            this.store.fields[element.name] = this.formatInput(value, element);
         }
 
         _initialCalculation() {
-            const fields = Object.keys(this.store);
-            fields.forEach(f => this._runDependingCalculations(f));
+            const fields = Object.keys(this.store.fields);
+            fields.forEach(field => this._runDependingCalculations({ field }));
         }
 
         processChange(event) {
@@ -70,7 +70,7 @@ const cform = (function(document) {
             }
 
             this._setStoreFromField(element, element.value);
-            this._runDependingCalculations(element.name);
+            this._runDependingCalculations({ field: element.name });
         }
 
         _setFieldValue(fieldName, value) {
@@ -79,9 +79,17 @@ const cform = (function(document) {
             element.value = this.formatOutput(value, element);
         }
 
-        _runDependingCalculations(field) {
-            const calculations = this.calculations.filter(c => c.input.includes(field));
+        _runDependingCalculations(element) {
+            const calculations = this._filterDependingCalculations(element);
             calculations.forEach(c => this._execCalculate(c));
+        }
+
+        _filterDependingCalculations(element) {
+            if (element.field) {
+                return this.calculations.filter(c => c.input.fields.includes(element.field));
+            } else if (element.variable) {
+                return this.calculations.filter(c => c.input.variables.includes(element.variable));
+            }
         }
 
         _execCalculate(entry) {
@@ -89,15 +97,25 @@ const cform = (function(document) {
             if (isNaN(value)) {
                 return;
             }
-            if (entry.output.field) {
-                this.store[entry.output.field] = value;
-                this._setFieldValue(entry.output.field, value);
-                this._runDependingCalculations(entry.output.field);
+            this._storeOutput(entry.output, value);
+            this._runDependingCalculations(entry.output);
+        }
+
+        _storeOutput(output, value) {
+            if (output.field) {
+                this.store.fields[output.field] = value;
+                this._setFieldValue(output.field, value);
+            } else if (output.variable) {
+                this.store.variables[output.variable] = value;
             }
         }
 
-        getValue(field) {
-            return this.store[field];
+        resolveFieldValue(fieldName) {
+            return this.store.fields[fieldName];
+        }
+
+        resolveVariableValue(variableName) {
+            return this.store.variables[variableName];
         }
 
         mathPlus(left, right) {
