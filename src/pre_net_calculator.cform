@@ -38,15 +38,15 @@ form pre_net_calculator {
         submit-button send "abschicken"
     }
 
-    calculate result.pre_tax = input.net_pay
-    calculate result.wage_tax = input.net_pay * 14.372%
-    calculate result.church_tax = result.wage_tax * 9%
-    calculate result.solidarity_tax = result.wage_tax * 5.5%
-    calculate result.tax = result.wage_tax + result.church_tax + result.solidarity_tax
-    calculate result.pension_insurance = input.net_pay * 9.35%
-    calculate result.jobless_insurance = input.net_pay * 1.5%
-    calculate result.health_insurance = input.net_pay * (7.30% + input.health_additional/100)
-    calculate result.nursing_care_insurance = input.net_pay * (1.275% + 0.25%)
-    calculate result.social_charges = result.pension_insurance + result.jobless_insurance + result.health_insurance + result.nursing_care_insurance
-    calculate result.net = result.pre_tax - result.tax - result.social_charges
+    calculate field result.pre_tax = input.net_pay
+    calculate field result.wage_tax = input.net_pay * 14.372%
+    calculate field result.church_tax = result.wage_tax * 9%
+    calculate field result.solidarity_tax = result.wage_tax * 5.5%
+    calculate field result.tax = result.wage_tax + result.church_tax + result.solidarity_tax
+    calculate field result.pension_insurance = input.net_pay * 9.35%
+    calculate field result.jobless_insurance = input.net_pay * 1.5%
+    calculate field result.health_insurance = input.net_pay * (7.30% + input.health_additional/100)
+    calculate field result.nursing_care_insurance = input.net_pay * (1.275% + 0.25%)
+    calculate field result.social_charges = result.pension_insurance + result.jobless_insurance + result.health_insurance + result.nursing_care_insurance
+    calculate field result.net = result.pre_tax - result.tax - result.social_charges
 }
