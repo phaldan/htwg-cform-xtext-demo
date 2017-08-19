@@ -1,4 +1,4 @@
-const cform = (function(document) {
+const Cform = (function(document) {
     'use strict';
 
     const CLASSES = {
@@ -18,7 +18,7 @@ const cform = (function(document) {
         output: null
     };
 
-    class Cform {
+    class Handler {
         constructor(element, { calculations, formatInput, formatOutput }) {
             this.element = element;
             this.formatInput = formatInput;
@@ -159,9 +159,8 @@ const cform = (function(document) {
     }
 
     function initiate(element, settings) {
-        const elements = (element instanceof Element) ? [element] : Array.prototype.slice.call(element);
         const cforms = elements.map(e => {
-            const cform = new Cform(e, Object.assign({}, DEFAULTS, settings));
+            const cform = new Handler(e, Object.assign({}, DEFAULTS, settings));
             instances.push(cform);
             return cform;
         });
@@ -174,7 +173,28 @@ const cform = (function(document) {
     const instances = [];
     document.addEventListener("change", e => instances.forEach(i => i.processChange(e)));
 
-    return {
-        init: initiate
+    return class Cform {
+        /**
+         * Creates a new instance.
+         * @param {HTMLElement|HTMLElement[]} elements Surrounding HTMLElement of the whole form
+         * @param {Object} [settings] Change default settings
+         **/
+        constructor(element, settings) {
+            const elements = (element instanceof Element) ? [element] : Array.prototype.slice.call(element);
+            this.cforms = elements.map(e => {
+                const cform = new Handler(e, Object.assign({}, DEFAULTS, settings));
+                instances.push(cform);
+                return cform;
+            });
+        }
+
+        /**
+         * Trigger execution of all depending calculations of an HTML
+         * form element.
+         * @param {HTMLElement} element  HTML form element
+         **/
+        update(element) {
+            cforms.forEach(c => c.update(element));
+        }
     };
 })(document);

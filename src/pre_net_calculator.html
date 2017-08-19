@@ -50,7 +50,7 @@
                 });
             });
 
-            const cforms = cform.init(document.querySelectorAll('.cform'), {
+            const cforms = new Cform(document.querySelectorAll('.cform'), {
                 calculations: cform_pre_net_calculator,
                 formatInput: value => {
                     return value.replace('.','').replace(',','.');
